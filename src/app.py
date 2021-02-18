@@ -14,6 +14,7 @@ CORS(app)
 
 # create the jackson family object
 jackson_family = FamilyStructure("Jackson")
+#can call the method by using jackson_family.get_all_members()
 
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
@@ -34,9 +35,33 @@ def handle_hello():
         "hello": "world",
         "family": members
     }
+#line 32 means new variable is created called members, what do we assign to the variable members
+
+    return jsonify(response_body), 200
+
+@app.route('/members', methods=['POST'])
+def handle_new():
+    member = request.json
+
+    jackson_family.add_all_members(member)
+    member = jackson_family.get_all_members()
+
+    response_body = {
+        "family": members
+    }
+
+    #this is calling the function but we change it to add because we are using the post method. 
+
+    # this is how you can use the Family datastructure by calling its methods
+    members = jackson_family.get_all_members()
+    response_body = {
+        "hello": "world",
+        "family": members
+    }
 
 
     return jsonify(response_body), 200
+
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
